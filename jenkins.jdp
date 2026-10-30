@@ -13,8 +13,8 @@ pipeline {
             steps {
                 dir('backend') {
                     sh 'mvn clean packege -DiskipTests'
+                }
                 echo 'BUILD SUCCESS'
-            }
         }
 
         stage('TEST') {
