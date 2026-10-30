@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -12,9 +13,10 @@ pipeline {
         stage('BUILD') {
             steps {
                 dir('backend') {
-                    sh 'mvn clean packege -DiskipTests'
+                    sh 'mvn clean package -DskipTests'
                 }
                 echo 'BUILD SUCCESS'
+            }
         }
 
         stage('TEST') {
