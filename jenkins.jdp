@@ -21,9 +21,11 @@ pipeline {
 
         stage('TEST') {
             steps {
+                 withSonarQubeEnv(credentialsId: 'sonar-cred') {
                 dir('backend') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar   -Dsonar.projectKey=testing-project   -Dsonar.projectName=\'testing-project\'   -Dsonar.host.url=http:// 13.127.131.216:9000   -Dsonar.token=sqp_c5ccb735be324d19f4ec8c1f5d4b9bc3317843ce'    
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar   -Dsonar.projectKey=testing-project   -Dsonar.projectName=\'testing-project\'
                 }
+                 }
          echo 'TEST SUCCESS'
             }
         }
