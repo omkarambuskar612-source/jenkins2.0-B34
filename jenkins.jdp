@@ -30,8 +30,8 @@ pipeline {
                     dir('backend') {
                         sh '''
                             mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                            -Dsonar.projectKey=om-testing \
-                            -Dsonar.projectName='om-testing'
+                            -Dsonar.projectKey=testing-project \
+                            -Dsonar.projectName='testing-project'
                         '''
                     }
                 }
