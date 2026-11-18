@@ -5,7 +5,9 @@ pipeline {
     stages {
         stage('PULL') {
             steps {
-                git branch: 'main', url: 'https://github.com/omkarambuskar612-source/jenkins2.0-B34.git'
+                git branch: 'main',
+                    url: 'https://github.com/omkarambuskar612-source/jenkins2.0-B34.git'
+
                 echo 'PULL SUCCESS'
             }
         }
@@ -15,30 +17,43 @@ pipeline {
                 dir('backend') {
                     sh 'mvn clean package -DskipTests'
                 }
+
                 echo 'BUILD SUCCESS'
             }
         }
 
         stage('TEST') {
             steps {
-                 withSonarQubeEnv(credentialsId: 'sonar-cred') {
-                dir('backend') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar   -Dsonar.projectKey=testing-project
-                }
-                 }
-         echo 'TEST SUCCESS'
+                echo 'TEST SUCCESS'
             }
         }
-        
-        stage('QUALITY-GATE') {
+
+        stage('SONARQUBE ANALYSIS') {
             steps {
-	        timeout(time: 5, unit: 'MINUTES') {
-		waitForQualityGate abortPipeline: false, credentialsId: 'sonar-cred'
-                echo 'QUALITY-PASSED'
+                withSonarQubeEnv('SonarQube') {
+                    dir('backend') {
+                        sh "mvn sonar:sonar -Dsonar.projectKey=testing-project"
+                    }
                 }
 
-                echo 'QUALITY-PASSED'                 
-	    }    
+                echo 'SONARQUBE ANALYSIS SUCCESS'
+            }
+        }
+
+        stage('QUALITY GATE') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    script {
+                        def qg = waitForQualityGate()
+
+                        if (qg.status != 'OK') {
+                            error 'QUALITY GATE FAILED'
+                        }
+
+                        echo 'QUALITY GATE PASSED'
+                    }
+                }
+            }
         }
 
         stage('DEPLOY') {
