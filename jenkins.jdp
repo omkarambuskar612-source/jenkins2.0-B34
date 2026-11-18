@@ -52,7 +52,7 @@ pipeline {
 
         stage('Countinuous-dilevery') {
             steps {
-                sh 'aws s3 cp /var/lib/jenkins/workspace/new-job-pipeline/backend/target/ student-registration-backend-0.0.1-SNAPSHOT.jar s3://my-testing-project1/studentapp.jar'
+                sh 'aws s3 cp backend/target/ student-registration-backend-0.0.1-SNAPSHOT.jar s3://my-testing-project1/studentapp.jar'
                 echo 'DEPLOY SUCCESS'
             }
         }
