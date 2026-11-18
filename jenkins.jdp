@@ -24,7 +24,7 @@ pipeline {
         stage('TEST') {
             steps {
                 withSonarQubeEnv(
-                    installationName: 'sonarqube',
+                    installationName: 'Sonarqube',
                     credentialsId: 'sonar-cred'
                 ) {
                     dir('backend') {
