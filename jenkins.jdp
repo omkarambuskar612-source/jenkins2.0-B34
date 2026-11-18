@@ -25,7 +25,7 @@ pipeline {
             steps {
                 withSonarQubeEnv(
                     installationName: 'sonarqube',
-                    credentialsId: 'sonarqube-credential'
+                    credentialsId: 'sonarqube-cred'
                 ) {
                     dir('backend') {
                         sh '''
