@@ -23,7 +23,7 @@ pipeline {
             steps {
                  withSonarQubeEnv(credentialsId: 'sonar-cred') {
                 dir('backend') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar   -Dsonar.projectKey=testing-project   -Dsonar.projectName=\'testing-project\'
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar   -Dsonar.projectKey=testing-project
                 }
                  }
          echo 'TEST SUCCESS'
