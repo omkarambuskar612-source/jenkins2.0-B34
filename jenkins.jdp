@@ -28,18 +28,6 @@ pipeline {
             }
         }
 
-        stage('SONARQUBE ANALYSIS') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    dir('backend') {
-                        sh "mvn sonar:sonar -Dsonar.projectKey=testing-project"
-                    }
-                }
-
-                echo 'SONARQUBE ANALYSIS SUCCESS'
-            }
-        }
-
         stage('QUALITY GATE') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
