@@ -28,20 +28,15 @@ pipeline {
             }
         }
 
-        stage('QUALITY GATE') {
+        stage('QUALITY-GATE') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    script {
-                        def qg = waitForQualityGate()
-
-                        if (qg.status != 'OK') {
-                            error 'QUALITY GATE FAILED'
-                        }
-
-                        echo 'QUALITY GATE PASSED'
-                    }
+	        timeout(time: 5, unit: 'MINUTES') {
+		waitForQualityGate abortPipeline: true, credentialsId: 'sonar-cred'
+                echo 'QUALITY-PASSED'
                 }
-            }
+
+                echo 'QUALITY-PASSED'                 
+	    }    
         }
 
         stage('DEPLOY') {
