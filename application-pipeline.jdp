@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('PULL STAGE') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/omkarambuskar612-source/jenkins2.0-B34.git'
+            }
+        }
+
+        stage('FRONTEND-DOCKER-BUILD') {
+            steps {
+                sh '''
+                    cd frontend
+                    docker build -t omkarambuskar/easy-frontend:latest .
+                '''
+            }
+        }
+
+        stage('BACKEND-DOCKER-BUILD') {
+            steps {
+                sh '''
+                    cd backend
+                    docker build -t omkarambuskar/easy-backend:latest .
+                '''
+            }
+        }
+
+        stage('DOCKER-PUSH') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
+                    sh '''
+                        set +x
+
+                        echo "$DOCKER_PASS" | docker login \
+                            -u "$DOCKER_USER" --password-stdin
+
+                        docker push omkarambuskar/easy-frontend:latest
